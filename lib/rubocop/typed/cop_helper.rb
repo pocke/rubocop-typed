@@ -7,19 +7,24 @@ module RuboCop
 
       module ClassMethods
         # on('String') {}
-        # on('String#gsub') {}
-        # on('String.class') {}
+        # on('String#gsub') {} # TODO
+        # on('Klass.class_method') {} # TODO
         def on(event, &block)
+          typed_handlers[event.to_sym] ||= []
+          typed_handlers[event.to_sym] << block
+        end
+
+        def typed_handlers
+          @typed_handlers ||= {}
         end
       end
 
       def type_of_node(node)
-        ::RuboCop::Typed.driver.type_of_node(path: processed_source.path, node: node)
+        path = PathUtil.smart_path(processed_source.path)
+        ::RuboCop::Typed.driver.type_of_node(path: path, node: node)
       end
 
       def investigate(processed_source)
-        super
-
         traverse = -> (node, &block) do
           block.call(node)
           node.children.each do |child|
@@ -27,14 +32,23 @@ module RuboCop
           end
         end
 
-        traverse.call(processed_source.ast) do |node|
+        ast = processed_source.ast
+        return unless ast
+
+        traverse.call(ast) do |node|
           type = type_of_node(node)
           next unless type
 
-          p type
+          case type
+          when Steep::AST::Types::Name::Instance
+            name = type.name.name # Is it correct?
+            handlers = self.class.typed_handlers[name]
+            handlers&.each do |handler|
+              handler.call(node: node, type: type)
+            end
+          end
         end
       end
     end
   end
 end
-

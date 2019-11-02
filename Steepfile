@@ -20,5 +20,5 @@
 # end
 
 target :lib do
-  check 'lib'
+  check 'smoke'
 end

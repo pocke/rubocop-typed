@@ -9,6 +9,7 @@ require_relative 'rubocop/typed'
 require_relative 'rubocop/typed/version'
 require_relative 'rubocop/typed/inject'
 require_relative 'rubocop/typed/steep_driver'
+require_relative 'rubocop/typed/cop_helper'
 
 RuboCop::Typed::Inject.defaults!
 RuboCop::Typed.init_steep_project

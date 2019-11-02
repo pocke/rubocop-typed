@@ -39,17 +39,17 @@ module RuboCop
       #   good_foo_method(args)
       #
       class Debug < Cop
-        # TODO: Implement the cop in here.
-        #
-        # In many cases, you can use a node matcher for matching node pattern.
-        # See https://github.com/rubocop-hq/rubocop/blob/master/lib/rubocop/node_pattern.rb
-        #
-        # For example
+        include RuboCop::Typed::CopHelper
+
         MSG = 'Use `#good_method` instead of `#bad_method`.'
 
         def_node_matcher :bad_method?, <<~PATTERN
           (send nil? :bad_method ...)
         PATTERN
+
+        on 'String' do |node:, type:|
+          binding.irb
+        end
 
         def on_send(node)
           return unless bad_method?(node)
