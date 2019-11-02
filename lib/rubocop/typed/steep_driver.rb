@@ -26,7 +26,12 @@ module RuboCop
       end
 
       def type_of_node(node:, path:)
-        project.type_of_node(path: Pathname(path), line: node.loc.expression&.line, column: node.loc.expression&.column)
+        line = node.loc.expression&.line
+        column = node.loc.expression&.column
+        return unless line
+        return unless column
+
+        project.type_of_node(path: Pathname(path), line: line, column: column)
       end
     end
   end

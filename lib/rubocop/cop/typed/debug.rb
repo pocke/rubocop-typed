@@ -43,18 +43,8 @@ module RuboCop
 
         MSG = 'Use `#good_method` instead of `#bad_method`.'
 
-        def_node_matcher :bad_method?, <<~PATTERN
-          (send nil? :bad_method ...)
-        PATTERN
-
-        on 'String' do |node:, type:|
-          binding.irb
-        end
-
-        def on_send(node)
-          return unless bad_method?(node)
-
-          add_offense(node)
+        on :Pathname do |node:, type:|
+          p node.parent if node.lvar_type?
         end
       end
     end

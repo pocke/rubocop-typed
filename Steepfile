@@ -21,4 +21,5 @@
 
 target :lib do
   check 'smoke'
+  library "pathname"
 end
