@@ -9,6 +9,15 @@ module RuboCop
     CONFIG         = YAML.safe_load(CONFIG_DEFAULT.read).freeze
 
     private_constant(:CONFIG_DEFAULT, :PROJECT_ROOT)
+
+    def self.init_steep_project
+      @driver = SteepDriver.new
+      @driver.init_project
+    end
+
+    def self.driver
+      @driver
+    end
   end
 end
 
