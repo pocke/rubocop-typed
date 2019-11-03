@@ -43,7 +43,7 @@ module RuboCop
         MSG = 'Do not use safe navigation operator with non nilable expression.'
 
         def on_csend(node)
-          type = RuboCop::Typed::Util.type_of_node(node: node, processed_source: processed_source)
+          type = RuboCop::Typed::Util.type_of_node(node: node.receiver, processed_source: processed_source)
           p [node, type]
           return if RuboCop::Typed::Util.nilable?(type)
 

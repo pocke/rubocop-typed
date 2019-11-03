@@ -27,7 +27,7 @@ module RuboCop
 
       def type_of_node(node:, path:)
         case node.type
-        when :send
+        when :send, :csend
           loc = node.loc.selector
         else
           loc = node.loc.expression
