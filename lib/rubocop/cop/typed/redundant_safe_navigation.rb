@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: when finished, run `rake generate_cops_documentation` to update the docs
 module RuboCop
   module Cop
     module Typed
@@ -39,20 +38,14 @@ module RuboCop
       #   good_foo_method(args)
       #
       class RedundantSafeNavigation < Cop
-        # TODO: Implement the cop in here.
-        #
-        # In many cases, you can use a node matcher for matching node pattern.
-        # See https://github.com/rubocop-hq/rubocop/blob/master/lib/rubocop/node_pattern.rb
-        #
-        # For example
-        MSG = 'Use `#good_method` instead of `#bad_method`.'
+        include RuboCop::Typed::CopHelper
 
-        def_node_matcher :bad_method?, <<~PATTERN
-          (send nil? :bad_method ...)
-        PATTERN
+        MSG = 'Do not use safe navigation operator with non nilable expression.'
 
-        def on_send(node)
-          return unless bad_method?(node)
+        def on_csend(node)
+          type = RuboCop::Typed::Util.type_of_node(node: node, processed_source: processed_source)
+          p [node, type]
+          return if RuboCop::Typed::Util.nilable?(type)
 
           add_offense(node)
         end

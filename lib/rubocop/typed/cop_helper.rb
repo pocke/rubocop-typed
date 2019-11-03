@@ -43,8 +43,6 @@ module RuboCop
             handlers&.each do |handler|
               handler.call(node: node, type: type)
             end
-          else
-            p [node, type]
           end
         end
       end

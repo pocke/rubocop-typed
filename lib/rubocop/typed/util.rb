@@ -3,12 +3,11 @@ module RuboCop
     module Util
       extend self
 
-      def nilable?(node:, processed_source:)
-        type = type_of_node(node: node, processed_source: processed_source)
+      def nilable?(type)
         case type
         when Steep::AST::Types::Nil, Steep::AST::Types::Any
           true
-        when Steep::AST::Types::Boolean, Steep::AST::Types::Instance
+        when Steep::AST::Types::Boolean, Steep::AST::Types::Name::Instance
           false
         when Steep::AST::Types::Union
           type.types.any? { |t| nilable?(t) }
