@@ -4,3 +4,8 @@ Typed/Debug:
   Description: 'TODO: Write a description of the cop.'
   Enabled: true
   VersionAdded: '0.77'
+
+Typed/RedundantSafeNavigation:
+  Description: 'TODO: Write a description of the cop.'
+  Enabled: true
+  VersionAdded: '0.77'
