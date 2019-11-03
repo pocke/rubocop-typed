@@ -19,12 +19,9 @@ module RuboCop
         end
       end
 
-      def type_of_node(node)
-        path = PathUtil.smart_path(processed_source.path)
-        ::RuboCop::Typed.driver.type_of_node(path: path, node: node)
-      end
-
       def investigate(processed_source)
+        return if self.class.typed_handlers.empty?
+
         traverse = -> (node, &block) do
           block.call(node)
           node.children.each do |child|
@@ -36,7 +33,7 @@ module RuboCop
         return unless ast
 
         traverse.call(ast) do |node|
-          type = type_of_node(node)
+          type = Util.type_of_node(node: node, processed_source: processed_source)
           next unless type
 
           case type
@@ -46,6 +43,8 @@ module RuboCop
             handlers&.each do |handler|
               handler.call(node: node, type: type)
             end
+          else
+            p [node, type]
           end
         end
       end

@@ -26,8 +26,14 @@ module RuboCop
       end
 
       def type_of_node(node:, path:)
-        line = node.loc.expression&.line
-        column = node.loc.expression&.column
+        case node.type
+        when :send
+          loc = node.loc.selector
+        else
+          loc = node.loc.expression
+        end
+        line = loc&.line
+        column = loc&.column
         return unless line
         return unless column
 
