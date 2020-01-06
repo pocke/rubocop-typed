@@ -1,1 +1,7 @@
 require: rubocop-typed
+
+AllCops:
+  DisabledByDefault: true
+
+Typed:
+  Enabled: true

@@ -4,57 +4,31 @@
 module RuboCop
   module Cop
     module Typed
-      # TODO: Write cop description and example of bad / good code. For every
-      # `SupportedStyle` and unique configuration, there needs to be examples.
-      # Examples must have valid Ruby syntax. Do not use upticks.
-      #
-      # @example EnforcedStyle: bar (default)
-      #   # Description of the `bar` style.
-      #
-      #   # bad
-      #   bad_bar_method
-      #
-      #   # bad
-      #   bad_bar_method(args)
-      #
-      #   # good
-      #   good_bar_method
-      #
-      #   # good
-      #   good_bar_method(args)
-      #
-      # @example EnforcedStyle: foo
-      #   # Description of the `foo` style.
-      #
-      #   # bad
-      #   bad_foo_method
-      #
-      #   # bad
-      #   bad_foo_method(args)
-      #
-      #   # good
-      #   good_foo_method
-      #
-      #   # good
-      #   good_foo_method(args)
-      #
       class Dig < Cop
-        # TODO: Implement the cop in here.
-        #
-        # In many cases, you can use a node matcher for matching node pattern.
-        # See https://github.com/rubocop-hq/rubocop/blob/master/lib/rubocop/node_pattern.rb
-        #
-        # For example
-        MSG = 'Use `#good_method` instead of `#bad_method`.'
-
-        def_node_matcher :bad_method?, <<~PATTERN
-          (send nil? :bad_method ...)
-        PATTERN
-
         def on_send(node)
-          return unless bad_method?(node)
+          sends = sends(node)
+          return unless sends
+          return unless sends.size >= 2
 
-          add_offense(node)
+          type = RuboCop::Typed::Util.type_of_node(node: node.receiver, processed_source: processed_source)
+          interface = RuboCop::Typed::Util.type_to_interface(type: type, processed_source: processed_source)
+
+          binding.irb
+
+          add_offense(node, message: sends.inspect)
+        end
+
+        def sends(node)
+          return unless node.send_type?
+          return unless node.method_name == :[]
+          return unless node.arguments.size == 1
+
+          rest = sends(node.receiver)
+          if rest
+            [*rest, node]
+          else
+            [node]
+          end
         end
       end
     end

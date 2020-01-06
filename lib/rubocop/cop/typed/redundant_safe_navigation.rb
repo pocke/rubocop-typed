@@ -44,7 +44,6 @@ module RuboCop
 
         def on_csend(node)
           type = RuboCop::Typed::Util.type_of_node(node: node.receiver, processed_source: processed_source)
-          p [node, type]
           return if RuboCop::Typed::Util.nilable?(type)
 
           add_offense(node)

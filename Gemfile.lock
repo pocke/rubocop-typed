@@ -11,7 +11,7 @@ PATH
       ast_utils (~> 0.3.0)
       language_server-protocol (~> 3.14.0.1)
       listen (~> 3.1)
-      parser (~> 2.4)
+      parser (~> 2.7.0)
       pry (~> 0.12.2)
       rainbow (>= 2.2.2, < 4.0)
 
