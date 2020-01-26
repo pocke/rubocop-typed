@@ -19,8 +19,9 @@ module RuboCop
       def init_project
         silent do
           @project = load_config()
-          load_sources(project, [])
-          load_signatures(project)
+          loader = ::Steep::Project::FileLoader.new(project: @project)
+          loader.load_sources([])
+          loader.load_signatures()
           type_check(project)
         end
       end
