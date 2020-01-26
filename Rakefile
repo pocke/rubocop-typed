@@ -1,5 +1,10 @@
 require "bundler/gem_tasks"
-task :default => :spec
+task :default => [:build_deps, :spec]
+
+task :build_deps do
+  sh 'bundle check || bundle install', chdir: 'vendor/ruby-signature'
+  sh 'bundle exec rake parser', chdir: 'vendor/ruby-signature'
+end
 
 require 'rspec/core/rake_task'
 

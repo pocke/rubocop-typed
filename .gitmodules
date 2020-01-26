@@ -1,0 +1,6 @@
+[submodule "vendor/ruby-signature"]
+	path = vendor/ruby-signature
+	url = https://github.com/ruby/ruby-signature.git
+[submodule "vendor/steep"]
+	path = vendor/steep
+	url = https://github.com/soutaro/steep.git

@@ -6,6 +6,5 @@ gemspec
 gem "rake", "~> 12.0"
 gem 'rspec'
 
-# FIXME
-gem 'ruby-signature', path: "../../ruby/ruby-signature"
-gem 'steep', path: "../../soutaro/steep"
+gem 'ruby-signature', path: "./vendor/ruby-signature"
+gem 'steep', path: "./vendor/steep"
