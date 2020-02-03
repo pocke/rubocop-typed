@@ -33,3 +33,10 @@ task :new_cop, [:cop] do |_task, args|
 
   puts generator.todo
 end
+
+task :update_submodules do
+  Dir['vendor/*/'].each do |dir|
+    sh 'git', 'fetch', 'origin', chdir: dir
+    sh 'git', 'checkout', 'origin/master', chdir: dir
+  end
+end
