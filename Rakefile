@@ -63,7 +63,6 @@ task :'test:smoke' do
     expected = File.read(expected_path).chomp('')
 
     if expected != actual
-      binding.irb
       Tempfile.open do |f|
         f.write(actual)
         f.flush
