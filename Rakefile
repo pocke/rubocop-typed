@@ -1,5 +1,5 @@
 require "bundler/gem_tasks"
-task :default => [:build_deps, :spec]
+task :default => [:build_deps, :'test:smoke']
 
 task :build_deps do
   sh 'bundle check || bundle install', chdir: 'vendor/ruby-signature'
@@ -38,5 +38,44 @@ task :update_submodules do
   Dir['vendor/*/'].each do |dir|
     sh 'git', 'fetch', 'origin', chdir: dir
     sh 'git', 'checkout', 'origin/master', chdir: dir
+  end
+end
+
+task :'test:smoke' do
+  require 'open3'
+  require 'tempfile'
+
+  dir = 'smoke'
+  sh 'bundle check || bundle install', chdir: dir
+  stdout, = Open3.capture2('bundle exec rubocop --cache false --format simple', chdir: dir).tap do |_, status|
+    raise "Unexpected status: #{status}" if status.exitstatus != 1
+  end
+
+  lines = stdout.lines
+  lines.pop # Remove "N files inspected, N offenses detected"
+
+  wrong_tests = []
+  lines.slice_when { |_, after| after.match?(/^== .+ ==$/) }.each do |path_line, *lines|
+    actual = lines.join.chomp('')
+
+    path = path_line[/^== (.+) ==$/, 1]
+    expected_path = path.sub('test', 'smoke/expected').sub(/\.rb$/, '.txt')
+    expected = File.read(expected_path).chomp('')
+
+    if expected != actual
+      binding.irb
+      Tempfile.open do |f|
+        f.write(actual)
+        f.flush
+        system "git diff --no-index #{expected_path} #{f.path}"
+        wrong_tests << path
+      end
+    end
+  end
+
+  unless wrong_tests.empty?
+    puts "Test failed with the following files"
+    puts wrong_tests
+    exit 1
   end
 end

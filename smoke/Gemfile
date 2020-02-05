@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+
+gem 'rubocop'
+gem 'ruby-signature', path: '../vendor/ruby-signature'
+gem 'steep', path: '../vendor/steep'
+gem 'rubocop-typed', path: '../'
