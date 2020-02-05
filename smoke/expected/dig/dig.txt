@@ -1,0 +1,14 @@
+C:  2:  3: Typed/Dig: [s(:send,
+  s(:lvar, :a), :[],
+  s(:sym, :a)), s(:send,
+  s(:send,
+    s(:lvar, :a), :[],
+    s(:sym, :a)), :[],
+  s(:sym, :b))]
+C:  5:  3: Typed/Dig: [s(:send,
+  s(:lvar, :b), :[],
+  s(:sym, :a)), s(:send,
+  s(:send,
+    s(:lvar, :b), :[],
+    s(:sym, :a)), :[],
+  s(:int, 0))]

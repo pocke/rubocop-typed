@@ -1,0 +1,1 @@
+C:  6:  1: Typed/RedundantSafeNavigation: Do not use safe navigation operator with non nilable expression.

@@ -1,0 +1,15 @@
+require: rubocop-typed
+
+AllCops:
+  DisabledByDefault: true
+
+Typed:
+  Enabled: true
+
+Typed/Dig:
+  Include:
+    - 'test/dig/**/*.rb'
+
+Typed/RedundantSafeNavigation:
+  Include:
+    - 'test/redundant_safe_navigation/**/*.rb'
