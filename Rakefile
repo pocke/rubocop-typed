@@ -2,8 +2,10 @@ require "bundler/gem_tasks"
 task :default => [:build_deps, :'test:smoke']
 
 task :build_deps do
-  sh 'bundle check || bundle install', chdir: 'vendor/ruby-signature'
-  sh 'bundle exec rake parser', chdir: 'vendor/ruby-signature'
+  Bundler.with_original_env do
+    sh 'bundle check || bundle install', chdir: 'vendor/ruby-signature'
+    sh 'bundle exec rake parser', chdir: 'vendor/ruby-signature'
+  end
 end
 
 require 'rspec/core/rake_task'
