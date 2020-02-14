@@ -5,6 +5,8 @@ module RuboCop
   module Cop
     module Typed
       class Dig < Cop
+        MSG = 'Use `dig` instead of `[]`.'
+
         def on_send(node)
           sends = sends(node)
           return unless sends
@@ -17,7 +19,7 @@ module RuboCop
           end
           return unless respond_to_dig
 
-          add_offense(node, message: sends.inspect)
+          add_offense(node)
         end
 
         private def sends(node)
