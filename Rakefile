@@ -68,7 +68,7 @@ task :'test:smoke' do
       Tempfile.open do |f|
         f.write(actual)
         f.flush
-        system "git diff --no-index #{expected_path} #{f.path}"
+        system "git --no-pager diff --no-index #{expected_path} #{f.path}"
         wrong_tests << path
       end
     end
